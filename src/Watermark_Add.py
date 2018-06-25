@@ -98,9 +98,9 @@ if request == "Y" or request == "y":
 
 watermark_template_image_path = input("\nEnter the path to your watermark template: ")
 
-# Create subfolder in base_images_save_path for watermarked images and set watermarked_images_save_path to it
+# TODO Create subfolder in base_images_save_path for watermarked images and set watermarked_images_save_path to it
 
-# Add watermark with function
+# TODO Add watermark with function
 
 request = input("Would you like to watermark your images[Y/N]: ")
 
