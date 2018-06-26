@@ -9,6 +9,7 @@ before adding the watermark.
 """
 
 import os
+import time
 from PIL import Image
 
 base_images_folder_path = None
@@ -51,6 +52,7 @@ def resize_images(folder_path):
     proceed = input("Continue? [Y/N]")
     if proceed == "Y" or proceed == "y":
         print("Images are now being resized. This may take some time...")
+        start = time.time()
         for filename in os.listdir(folder_path):
             if filename.endswith(".jpg") or filename.endswith(".jpeg"):
                 # Resize current image and save to resized_images_save_path
@@ -65,8 +67,10 @@ def resize_images(folder_path):
                                   str(h_dim) + '.png'))
 
     if proceed == "Y" or proceed == "y":
-        print("\nAll images have been resized to", w_dim, "X", h_dim, "and saved to path: ",
+        end = time.time()
+        print("\n", image_count, "images have been resized to", w_dim, "X", h_dim, "and saved to path: ",
               resized_images_save_path)
+        print("TOTAL ELAPSED TIME: ", (end - start), "seconds")
 
     if proceed == "N" or proceed == "n":
         print("\nResizing Process aborted!")
@@ -101,6 +105,7 @@ def add_watermark(base_folder_path, water_mark_path):
 
     print("Images are now being watermarked. This may take some time...")
     image_count = 0
+    start = time.time()
     for filename in os.listdir(base_folder_path):
             if filename.endswith(".jpg") or filename.endswith(".jpeg"):
                 # Resize current image and save to resized_images_save_path
@@ -115,7 +120,9 @@ def add_watermark(base_folder_path, water_mark_path):
                 img.save((watermarked_images_save_path + filename[:-4] + "_" + suffix + '.png'))
                 image_count += 1
 
+    end = time.time()
     print("\n", image_count, "images have been watermarked and saved to path: ", watermarked_images_save_path)
+    print("TOTAL ELAPSED TIME: ", (end - start), "seconds")
 
 
 ###########################################
