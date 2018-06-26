@@ -39,21 +39,30 @@ def resize_images(folder_path):
                    "Make sure it is unique to the folder, otherwise files may be written over: ")
 
     # Iterate through items in base images folder
+    image_count = 0;
     print("\nImages to be resized:\n")
     for filename in os.listdir(folder_path):
         if filename.endswith(".jpg") or filename.endswith(".jpeg") or filename.endswith(".png"):
             print(os.path.join(folder_path, filename))
+            image_count += 1
+
+    print("\nTotal Images: ", image_count)
 
     proceed = input("Continue? [Y/N]")
     if proceed == "Y" or proceed == "y":
         print("Images are now being resized. This may take some time...")
         for filename in os.listdir(folder_path):
-            if filename.endswith(".jpg") or filename.endswith(".jpeg") or filename.endswith(".png"):
+            if filename.endswith(".jpg") or filename.endswith(".jpeg"):
                 # Resize current image and save to resized_images_save_path
                 img = Image.open(folder_path + "/" + filename)
                 img_resized = img.resize((w_dim, h_dim), Image.LANCZOS)
                 img_resized.save((resized_images_save_path + filename[:-4] + "_" + suffix + str(w_dim) + "x" +
                                   str(h_dim) + '.jpg'), "JPEG")
+            if filename.endswith(".png"):
+                img = Image.open(folder_path + "/" + filename)
+                img_resized = img.resize((w_dim, h_dim), Image.LANCZOS)
+                img_resized.save((resized_images_save_path + filename[:-4] + "_" + suffix + str(w_dim) + "x" +
+                                  str(h_dim) + '.png'))
 
     if proceed == "Y" or proceed == "y":
         print("\nAll images have been resized to", w_dim, "X", h_dim, "and saved to path: ",
@@ -90,16 +99,23 @@ def add_watermark(base_folder_path, water_mark_path):
     suffix = input("Enter a suffix to be added to the file. "
                    "Make sure it is unique to the folder, otherwise files may be written over: ")
 
-    print("Images are now being resized. This may take some time...")
-
+    print("Images are now being watermarked. This may take some time...")
+    image_count = 0
     for filename in os.listdir(base_folder_path):
-            if filename.endswith(".jpg") or filename.endswith(".jpeg") or filename.endswith(".png"):
+            if filename.endswith(".jpg") or filename.endswith(".jpeg"):
                 # Resize current image and save to resized_images_save_path
                 img = Image.open(base_folder_path + "/" + filename)
                 img.paste(watermark_template, (0, 0), watermark_template)
                 img.save((watermarked_images_save_path + filename[:-4] + "_" + suffix + '.jpg'), "JPEG")
+                image_count += 1
+            if filename.endswith(".png"):
+                # Resize current image and save to resized_images_save_path
+                img = Image.open(base_folder_path + "/" + filename)
+                img.paste(watermark_template, (0, 0), watermark_template)
+                img.save((watermarked_images_save_path + filename[:-4] + "_" + suffix + '.png'))
+                image_count += 1
 
-    print("\nAll supplied images have been watermarked and saved to path: ", watermarked_images_save_path)
+    print("\n", image_count, "images have been watermarked and saved to path: ", watermarked_images_save_path)
 
 
 ###########################################
@@ -124,29 +140,28 @@ if request == "Y" or request == "y":
     resize_images(base_images_folder_path)
     request = None
 
-watermark_template_image_path = input("\nEnter the path to your watermark template: ")
-while not os.path.exists(watermark_template_image_path):
-    print("Invalid File Path! Ensure the directory is written correctly and is not empty.")
-    watermark_template_image_path = input("Enter the path to your watermark template (image): ")
-
-print("\nWatermark template successfully found at: ", watermark_template_image_path)
-print("Base image directory: ", base_images_folder_path)
-
-# TODO Add watermark with function
-
-request = input("\nWould you like to add a watermark to your images located in the above base directory[Y/N]: ")
-
-
+request = input("\nWould you like to add a watermark to your images[Y/N]: ")
 if request == "Y" or request == "y":
-    add_watermark(base_images_folder_path, watermark_template_image_path)
+    watermark_template_image_path = input("\nEnter the path to your watermark template: ")
+    while not os.path.exists(watermark_template_image_path):
+        print("Invalid File Path! Ensure the directory is written correctly and is not empty.")
+        watermark_template_image_path = input("Enter the path to your watermark template (image): ")
+if request == "Y" or request == "y":
+    print("\nWatermark template successfully found at: ", watermark_template_image_path)
+    print("Base image directory: ", base_images_folder_path)
     request = None
-else:
-    request = input("Would you like to specify another path[Y/N]: ")
+    request = input("\nAre you sure you want to add a watermark to your images "
+                    "located in the above base directory[Y/N]: ")
     if request == "Y" or request == "y":
         add_watermark(base_images_folder_path, watermark_template_image_path)
         request = None
     else:
-        print("\nThank you for using this script!")
+        request = input("Would you like to specify another path[Y/N]: ")
+        if request == "Y" or request == "y":
+            add_watermark(base_images_folder_path, watermark_template_image_path)
+            request = None
+        else:
+            print("\nThank you for using this script!")
 
 
 print("\nThank you for using this script!")
