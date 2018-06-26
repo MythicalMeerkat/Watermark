@@ -1,6 +1,6 @@
 """
 Author: Jeff Wilson
-Date: 6/25/2018
+Start Date: 6/25/2018
 
 This script applies a Watermark Template/Image (User Specified Path) on to the Original Image (User Specified Path) and
 saves it to a subfolder of the original image path. The user also has the option to resize their original image
