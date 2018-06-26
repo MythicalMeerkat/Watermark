@@ -2,7 +2,7 @@
 Author: Jeff Wilson
 Date: 6/25/2018
 
-This script applies a Watermark Template (User Specified Path) on to the Original Image (User Specified Path) and
+This script applies a Watermark Template/Image (User Specified Path) on to the Original Image (User Specified Path) and
 saves it to a subfolder of the original image path. The user also has the option to resize their original image
 before adding the watermark.
 
@@ -46,15 +46,18 @@ def resize_images(folder_path):
 
     proceed = input("Continue? [Y/N]")
     if proceed == "Y" or proceed == "y":
+        print("Images are now being resized. This may take some time...")
         for filename in os.listdir(folder_path):
             if filename.endswith(".jpg") or filename.endswith(".jpeg") or filename.endswith(".png"):
                 # Resize current image and save to resized_images_save_path
                 img = Image.open(folder_path + "/" + filename)
                 img_resized = img.resize((w_dim, h_dim), Image.LANCZOS)
-                img_resized.save((resized_images_save_path + filename[:-4] + "_" + suffix + '.jpg'), "JPEG")
+                img_resized.save((resized_images_save_path + filename[:-4] + "_" + suffix + str(w_dim) + "x" +
+                                  str(h_dim) + '.jpg'), "JPEG")
 
     if proceed == "Y" or proceed == "y":
-        print("\nAll images have been resized to", w_dim, "X", h_dim, "and saved to path: ", resized_images_save_path)
+        print("\nAll images have been resized to", w_dim, "X", h_dim, "and saved to path: ",
+              resized_images_save_path)
 
     if proceed == "N" or proceed == "n":
         print("\nResizing Process aborted!")
@@ -86,6 +89,8 @@ def add_watermark(base_folder_path, water_mark_path):
 
     suffix = input("Enter a suffix to be added to the file. "
                    "Make sure it is unique to the folder, otherwise files may be written over: ")
+
+    print("Images are now being resized. This may take some time...")
 
     for filename in os.listdir(base_folder_path):
             if filename.endswith(".jpg") or filename.endswith(".jpeg") or filename.endswith(".png"):
@@ -122,14 +127,14 @@ if request == "Y" or request == "y":
 watermark_template_image_path = input("\nEnter the path to your watermark template: ")
 while not os.path.exists(watermark_template_image_path):
     print("Invalid File Path! Ensure the directory is written correctly and is not empty.")
-    base_images_folder_path = input("Enter the path to your watermark template (image): ")
+    watermark_template_image_path = input("Enter the path to your watermark template (image): ")
 
 print("\nWatermark template successfully found at: ", watermark_template_image_path)
 print("Base image directory: ", base_images_folder_path)
 
 # TODO Add watermark with function
 
-request = input("\nWould you like to watermark your images located in the above directory[Y/N]: ")
+request = input("\nWould you like to add a watermark to your images located in the above base directory[Y/N]: ")
 
 
 if request == "Y" or request == "y":
@@ -144,7 +149,7 @@ else:
         print("\nThank you for using this script!")
 
 
-print("Thank you for using this script!")
+print("\nThank you for using this script!")
 
 
 ##############################################
