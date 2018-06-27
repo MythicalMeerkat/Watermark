@@ -45,10 +45,11 @@ if request == "Y" or request == "y":
         print("Invalid File Path! Ensure the directory is written correctly and is not empty.")
         watermark_template_image_path = input("Enter the path to your watermark template (image): ")
 
-print("Watermark path SUCCESSFULLY found at:", watermark_template_image_path, "\n")
+    print("Watermark path SUCCESSFULLY found at:", watermark_template_image_path, "\n")
 
-suffix = input("Enter a suffix to be added to the file. "
-               "Make sure it is unique to the folder, otherwise files may be written over: ")
+if resize_request or watermark_request:
+    suffix = input("Enter a suffix to be added to the file. "
+                   "Make sure it is unique to the folder, otherwise files may be written over: ")
 
 if resize_request and watermark_request:
     print("\nWatermark template successfully found at: ", watermark_template_image_path)
@@ -61,17 +62,50 @@ if resize_request and watermark_request:
         watermark_images_save_path = resizing_functions.resize_images(base_images_folder_path, suffix)
         watermarking_functions.add_watermark(watermark_images_save_path, watermark_template_image_path, suffix)
         request = None
+        end = time.time()
     else:
         request = input("Would you like to specify another base path[Y/N]: ")
         if request == "Y" or request == "y":
             start = time.time()
             watermark_images_save_path = resizing_functions.resize_images(base_images_folder_path)
-            watermarking_functions.add_watermark(watermark_images_save_path, watermark_template_image_path)
+            watermarking_functions.add_watermark(watermark_images_save_path, watermark_template_image_path, suffix)
             request = None
+            end = time.time()
         else:
             print("\nThank you for using this script!")
 
-end = time.time()
+
+if resize_request and not watermark_request:
+    print("Base image directory: ", base_images_folder_path)
+    request = None
+    request = input("\nAre you sure you want to resize your images "
+                    "located in the above base directory[Y/N]: ")
+    if request == "Y" or request == "y":
+        start = time.time()
+        resizing_functions.resize_images(base_images_folder_path, suffix)
+        request = None
+        end = time.time()
+    else:
+        print("\nResizing Process Aborted!")
+
+
+if watermark_request and not resize_request:
+    print("Base image directory: ", base_images_folder_path)
+    request = None
+    request = input("\nAre you sure you want to watermark your images "
+                    "located in the above base directory[Y/N]: ")
+    if request == "Y" or request == "y":
+        start = time.time()
+        watermarking_functions.add_watermark(base_images_folder_path, watermark_template_image_path, suffix)
+        request = None
+        end = time.time()
+    else:
+        print("\nWatermarking Process Aborted!")
+
+if not resize_request and not watermark_request:
+    start = 0
+    end = 0
+
 
 display_functions.display_time_elapsed(start, end)
 
