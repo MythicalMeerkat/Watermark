@@ -10,9 +10,10 @@ from PIL import Image
 import os
 
 
-def resize_images(folder_path, file_suffix):
+def resize_images(folder_path, dir_name):
 
-    resized_images_save_path = folder_path + "/resized/"
+    base_saving_directory = folder_path + "/" + dir_name + "/"
+    resized_images_save_path = base_saving_directory + "resized/"
 
     # Create subfolder in folder path for storing resized images
     if not os.path.exists(resized_images_save_path):
@@ -36,20 +37,20 @@ def resize_images(folder_path, file_suffix):
 
     print("\nTotal Images: ", image_count)
 
-    proceed = input("Continue? [Y/N]")
+    proceed = input("\nContinue? [Y/N]")
     if proceed == "Y" or proceed == "y":
-        print("Images are now being resized. This may take some time...\n")
+        print("\nImages are now being resized. This may take some time...")
         for filename in os.listdir(folder_path):
             if filename.endswith(".jpg") or filename.endswith(".jpeg"):
                 # Resize current image and save to resized_images_save_path
                 img = Image.open(folder_path + "/" + filename)
                 img_resized = img.resize((w_dim, h_dim), Image.LANCZOS)
-                img_resized.save((resized_images_save_path + filename[:-4] + "_" + file_suffix + str(w_dim) + "x" +
+                img_resized.save((resized_images_save_path + filename[:-4] + "_" + str(w_dim) + "x" +
                                   str(h_dim) + '.jpg'), "JPEG")
             if filename.endswith(".png"):
                 img = Image.open(folder_path + "/" + filename)
                 img_resized = img.resize((w_dim, h_dim), Image.LANCZOS)
-                img_resized.save((resized_images_save_path + filename[:-4] + "_" + file_suffix + str(w_dim) + "x" +
+                img_resized.save((resized_images_save_path + filename[:-4] + "_" + str(w_dim) + "x" +
                                   str(h_dim) + '.png'))
 
     if proceed == "Y" or proceed == "y":
@@ -67,4 +68,4 @@ def resize_images(folder_path, file_suffix):
 
 # Once all images have been resized, return the path to save watermarked images at
 
-    return resized_images_save_path
+    return base_saving_directory
