@@ -4,3 +4,4 @@ Source hosting for the watermark script.
 - display_functions.py: Contains functions for printing app headers and other UX improvements
 - resizing_functions.py: Contains functions for resizing the images
 - watermarking_functions.py: Contains functions for watermarking the images
+- os_functions.py: Contains functions for manipulating OS files.
