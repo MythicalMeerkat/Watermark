@@ -2,7 +2,7 @@
 Author: Jeff Wilson
 Start Date: 6/25/2018
 
-This script applies a Watermark Template/Image (User Specified Path) on to the Original Image (User Specified Path) and
+This script can a Watermark Template/Image (User Specified Path) on to the Original Image (User Specified Path) and
 saves it to a subfolder of the original image path. The user also has the option to resize their original image
 before adding the watermark.
 
@@ -44,12 +44,19 @@ request = input("Your base image and watermark template MUST BE THE SAME SIZE, i
 if request == "Y" or request == "y":
     resize_request = True
     request = None
+    print("Script will resize images.")
+else:
+    print("Script will not resize images.")
 
-    # Does the user want to keep their resized images once the script is over?
+# Does the user want to keep their resized images once the script is over?
 
-    request = input("\nWould you like to DELETE the resized images once the script is finished[Y/N]: ")
-    if request == "Y" or request == "y":
+request = input("\nWould you like to DELETE the resized images once the script is finished[Y/N]: ")
+if request == "Y" or request == "y":
         delete_request = True
+if request == "N" or request == "n":
+    pass
+else:
+    print("Unexpected input, keeping images.")
 
 
 # Does the user want to watermark images?
@@ -64,8 +71,10 @@ if request == "Y" or request == "y":
         watermark_template_image_path = input("Enter the path to your watermark template (image): ")
 
     print("Watermark path SUCCESSFULLY found at:", watermark_template_image_path, "\n")
+else:
+    print("Images will not be watermarked.")
 
-# The user wants to do some sort of file manipulations, therefore we should specify a directory suffix.
+# The user wants to do some sort of file manipulation, therefore we should specify a directory name.
 
 if resize_request or watermark_request:
     directory_name = input("Enter a directory name for the images. "
@@ -138,7 +147,6 @@ if not resize_request and not watermark_request:
 
 
 # Display the total script Run time
-
 display_functions.display_time_elapsed(start, end)
 
 print("\nThank you for using this script!")
