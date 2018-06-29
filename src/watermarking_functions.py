@@ -12,7 +12,11 @@ import os
 
 
 def add_watermark(base_folder_path, water_mark_path):
-    watermark_template = Image.open(water_mark_path)
+    try:
+        watermark_template = Image.open(water_mark_path)
+    except PermissionError:
+        print("Fatal Error! Cannot Access Template, please check your system permissions!")
+        return None
 
     reading_path = base_folder_path + "resized/"
     watermarked_images_save_path = base_folder_path + "watermarked/"
@@ -25,7 +29,7 @@ def add_watermark(base_folder_path, water_mark_path):
     else:
         print("\nPath already exists at: ", watermarked_images_save_path, " This path Will be used for saving.\n")
 
-    print("Images are now being watermarked. This may take some time...")
+    print("Image(s) are now being watermarked. This may take some time...")
     image_count = 0
     for filename in os.listdir(reading_path):
             if filename.endswith(".jpg") or filename.endswith(".jpeg"):
@@ -41,6 +45,6 @@ def add_watermark(base_folder_path, water_mark_path):
                 img.save((watermarked_images_save_path + filename[:-4] + '.png'))
                 image_count += 1
 
-    print(image_count, "images have been watermarked and saved to path: ", watermarked_images_save_path)
+    print(image_count, "image(s) have been watermarked and saved to path: ", watermarked_images_save_path)
 
     return None
