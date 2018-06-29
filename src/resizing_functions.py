@@ -7,7 +7,10 @@ This python file hosts the resizing functions utilized by the main script.
 """
 
 from PIL import Image
+import time
 import os
+
+start = 0
 
 
 def resize_images(folder_path, dir_name):
@@ -23,23 +26,25 @@ def resize_images(folder_path, dir_name):
     else:
         print("\nPath already exists at: ", resized_images_save_path, " This path Will be used for saving.\n")
 
-    w_dim = int(input("Enter the new width of the base images(px): "))
-    h_dim = int(input("Enter the new height of the base images(px): "))
+    w_dim = int(input("Enter the new width of the base image(s) (px): "))
+    h_dim = int(input("Enter the new height of the base image(s) (px): "))
 
 
 # Iterate through items in base images folder
     image_count = 0
-    print("\nImages to be copied and worked with:\n")
+    print("\nImage(s) to be copied and worked with:\n")
     for filename in os.listdir(folder_path):
         if filename.endswith(".jpg") or filename.endswith(".jpeg") or filename.endswith(".png"):
             print(os.path.join(folder_path, filename))
             image_count += 1
 
-    print("\nTotal Images: ", image_count)
+    print("\nTotal Image(s): ", image_count)
 
     proceed = input("\nContinue? [Y/N]")
     if proceed == "Y" or proceed == "y":
-        print("\nImages are now being resized. This may take some time...")
+        print("\nImage(s) are now being resized. This may take some time...")
+        global start
+        start = time.time()
         for filename in os.listdir(folder_path):
             if filename.endswith(".jpg") or filename.endswith(".jpeg"):
                 # Resize current image and save to resized_images_save_path
@@ -54,7 +59,7 @@ def resize_images(folder_path, dir_name):
                                   str(h_dim) + '.png'))
 
     if proceed == "Y" or proceed == "y":
-        print(image_count, "images have been resized to", w_dim, "X", h_dim, "and saved to path: ",
+        print(image_count, "image(s) have been resized to", w_dim, "X", h_dim, "and saved to path: ",
               resized_images_save_path)
 
     if proceed == "N" or proceed == "n":
@@ -69,3 +74,7 @@ def resize_images(folder_path, dir_name):
 # Once all images have been resized, return the path to save watermarked images at
 
     return base_saving_directory
+
+
+def return_start_time():
+    return start

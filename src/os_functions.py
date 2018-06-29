@@ -19,7 +19,7 @@ def delete_images(folder_path):
         try:
             shutil.rmtree(delete_path)
         except OSError:
-            print("\nFatal Error! Unable to delete unwanted files at path: ", delete_path)
+            print("\nFatal Error! Unable to delete unwanted file(s) at path: ", delete_path)
 
     return None
 
