@@ -10,10 +10,10 @@ before adding the watermark.
 
 import os
 import time
-from src import display_functions
-from src import resizing_functions
-from src import watermarking_functions
-from src import os_functions
+import display_functions
+import resizing_functions
+import watermarking_functions
+import os_functions
 
 ###########################################
 # Entry point for running the script (main)
